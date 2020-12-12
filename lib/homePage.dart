@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:portfolio/widgets/drawer.dart';
 import 'package:portfolio/widgets/floating_widget.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
+import 'package:smooth_scroll_web/smooth_scroll_web.dart';
 
 import './widgets/navBar.dart';
 import 'pages/about.dart';
@@ -10,14 +11,6 @@ import 'pages/certificates.dart';
 import 'pages/contact.dart';
 import 'pages/projects.dart';
 import 'pages/skills.dart';
-
-enum Screen {
-  LandingPage,
-  AboutPage,
-  SkillPage,
-  CertificatePage,
-  ProjectPage,
-}
 
 class HomePage extends StatefulWidget {
   @override
@@ -27,17 +20,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final scrollDirection = Axis.vertical;
   int counter = 0;
-  TabController tabController;
-  List<Widget> screens = [
-    About(),
-    Skills(),
-    Projects(),
-    Certificates(),
-    Contact(),
-  ];
-
   AutoScrollController controller;
-  List<List<int>> list;
+  List<Widget> screens;
 
   @override
   void initState() {
@@ -46,7 +30,15 @@ class _HomePageState extends State<HomePage> {
         viewportBoundaryGetter: () =>
             Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
         axis: scrollDirection);
-    list = List.generate(5, (index) => <int>[index, 3]);
+    screens = [
+      About(),
+      Skills(),
+      Projects(
+        controller: controller,
+      ),
+      Certificates(),
+      Contact(),
+    ];
   }
 
   @override
@@ -81,23 +73,36 @@ class _HomePageState extends State<HomePage> {
                           scrollToIndex(index: index);
                         },
                       ),
-                    ),
+              ),
             ],
           ),
           floatingActionButton: FloatingWidget(),
           floatingActionButtonLocation:
-              FloatingActionButtonLocation.startDocked,
-          body: ListView(
-            scrollDirection: scrollDirection,
+          FloatingActionButtonLocation.startDocked,
+          body: constraints.maxWidth > 800
+              ? SmoothScrollWeb(
             controller: controller,
-            children: list.map<Widget>((data) {
-              return _getRow(
-                data[0],
-                MediaQuery.of(context).size.height,
-              );
-            }).toList(),
-          ),
+            child: content(constraints, context),
+          )
+              : content(constraints, context),
         );
+      },
+    );
+  }
+
+  ListView content(BoxConstraints constraints, BuildContext context) {
+    return ListView.builder(
+      physics:
+      constraints.maxWidth < 800 ? null : NeverScrollableScrollPhysics(),
+      scrollDirection: scrollDirection,
+      controller: controller,
+      itemCount: screens.length,
+      itemBuilder: (BuildContext context, int index) {
+        return _getRow(
+            index, MediaQuery
+            .of(context)
+            .size
+            .height - 100, constraints);
       },
     );
   }
@@ -108,7 +113,7 @@ class _HomePageState extends State<HomePage> {
     controller.highlight(index);
   }
 
-  Widget _getRow(int index, double height) {
+  Widget _getRow(int index, double height, BoxConstraints constraints) {
     return _wrapScrollTag(
         index: index,
         child: Container(

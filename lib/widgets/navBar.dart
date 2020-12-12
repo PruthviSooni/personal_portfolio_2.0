@@ -11,11 +11,11 @@ class NavBar extends StatelessWidget {
       child: TabBar(
         indicatorColor: Colors.transparent,
         onTap: onTap,
+        indicator: BoxDecoration(),
         tabs: [
           Tab(
             child: Text(
               'About',
-              textAlign: TextAlign.center,
             ),
           ),
           Tab(
@@ -25,7 +25,7 @@ class NavBar extends StatelessWidget {
             child: Text('Projects', textAlign: TextAlign.center),
           ),
           Tab(
-            child: Text('Certificates', textAlign: TextAlign.center),
+            child: Text('Certificates'),
           ),
           Tab(
             child: Text('Contact', textAlign: TextAlign.center),
