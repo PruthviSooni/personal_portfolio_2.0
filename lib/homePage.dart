@@ -73,17 +73,17 @@ class _HomePageState extends State<HomePage> {
                           scrollToIndex(index: index);
                         },
                       ),
-              ),
+                    ),
             ],
           ),
           floatingActionButton: FloatingWidget(),
           floatingActionButtonLocation:
-          FloatingActionButtonLocation.startDocked,
+              FloatingActionButtonLocation.startDocked,
           body: constraints.maxWidth > 800
               ? SmoothScrollWeb(
-            controller: controller,
-            child: content(constraints, context),
-          )
+                  controller: controller,
+                  child: content(constraints, context),
+                )
               : content(constraints, context),
         );
       },
