@@ -6,13 +6,14 @@ class IconGenerator extends StatelessWidget {
   final String icon;
   final String image;
 
-  const IconGenerator({Key key, this.width, this.image, this.icon})
-      : super(key: key);
+  const IconGenerator({Key key, this.width, this.image, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        SizedBox(height: 10),
         Container(
           width: 70,
           padding: EdgeInsets.all(10),
@@ -24,7 +25,6 @@ class IconGenerator extends StatelessWidget {
             icon,
           ),
         ),
-        SizedBox(height: 10),
         Image.asset(
           image,
           width: width,

@@ -11,7 +11,7 @@ class FloatingWidget extends StatelessWidget {
       height: 500,
       padding: EdgeInsets.only(right: 20),
       margin: EdgeInsets.only(top: size.height / 1.3),
-      alignment: Alignment.bottomRight,
+      alignment: Alignment.bottomLeft,
       child: Row(
         children: [
           Column(

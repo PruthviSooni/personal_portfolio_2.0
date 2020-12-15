@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio/homePage.dart';
+import 'package:portfolio/utils/colors.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,8 +13,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Auto Scroll Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+          primarySwatch: Colors.blue,
+          ),
       home: HomePage(),
     );
   }

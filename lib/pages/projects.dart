@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:portfolio/service/fetchProjects.dart';
 import 'package:portfolio/widgets/project_widget.dart';
+import 'package:responsive_widgets/responsive_widgets.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 import '../models/projects.dart' as project;
@@ -17,7 +19,7 @@ class Projects extends StatefulWidget {
 }
 
 class _ProjectsState extends State<Projects> {
-  List<project.Projects> projects;
+  List<project.Projects> projects, reversed;
 
   @override
   void initState() {
@@ -27,23 +29,24 @@ class _ProjectsState extends State<Projects> {
 
   Future getData() async {
     projects = await GetData().getProjects();
-    print(projects[0].title);
-    return projects;
+    reversed = projects.reversed.toList();
+    return reversed;
   }
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-      print(constraints.maxWidth);
-      return pageView(constraints, context);
-    });
+    ResponsiveWidgets.init(
+      context,
+    );
+    return ResponsiveWidgets.builder(
+      child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+        return pageView(constraints, context);
+      }),
+    );
   }
 
   Widget pageView(BoxConstraints constraints, BuildContext context) {
-    var size = constraints.maxWidth / 5.floorToDouble();
-    var maxWidth = constraints.maxWidth;
-    var orientation = MediaQuery.of(context).orientation;
     return Container(
       color: kDarkGrey,
       height: MediaQuery.of(context).size.height,
@@ -53,23 +56,33 @@ class _ProjectsState extends State<Projects> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               return snapshot.hasData
-                  ? Stack(
+                  ? Column(
                       children: [
                         Container(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.all(20),
+                          child: Text(
+                            'Projects Overview',
+                            style: GoogleFonts.raleway(
+                                fontSize: 26, color: Colors.white),
+                          ),
+                        ),
+                        Container(
                           height: 400,
-                          margin: EdgeInsets.all(20),
+                          margin: EdgeInsets.all(10),
                           child: GridView.builder(
-                            itemCount: projects.length,
+                            itemCount: reversed.length,
                             scrollDirection: Axis.horizontal,
+                            physics: BouncingScrollPhysics(),
                             itemBuilder: (BuildContext context, int index) {
                               return ProjectWidget(
                                 projects: project.Projects(
-                                  title: projects[index].title,
-                                  description: projects[index].description,
-                                  icon: projects[index].icon,
-                                  id: projects[index].id,
-                                  url: projects[index].url,
-                                ),
+                                    title: reversed[index].title,
+                                    description: reversed[index].description,
+                                    icon: reversed[index].icon,
+                                    id: reversed[index].id,
+                                    url: reversed[index].url,
+                                    technologies: reversed[index].technologies),
                               );
                             },
                             gridDelegate:

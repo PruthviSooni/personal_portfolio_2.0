@@ -102,6 +102,7 @@ class Assets {
     var size = constraints.maxWidth;
     return [
       Container(
+        height: 330,
         decoration: BoxDecoration(color: kDarkGrey),
         child: IconGenerator(
           width: width,
@@ -110,7 +111,7 @@ class Assets {
         ),
       ),
       Container(
-        padding: EdgeInsets.only(top: size > 1100 ? 10 : 13),
+        height: 330,
         decoration: BoxDecoration(color: kDarkGrey),
         child: IconGenerator(
           width: width,
@@ -119,7 +120,7 @@ class Assets {
         ),
       ),
       Container(
-        padding: EdgeInsets.only(top: size > 1100 ? 25 : 23),
+        height: 330,
         decoration: BoxDecoration(color: kDarkGrey),
         child: IconGenerator(
           width: width,
@@ -128,7 +129,7 @@ class Assets {
         ),
       ),
       Container(
-        padding: EdgeInsets.only(top: size > 1200 ? 25 : 23),
+        height: 330,
         decoration: BoxDecoration(color: kDarkGrey),
         child: IconGenerator(
           width: width,

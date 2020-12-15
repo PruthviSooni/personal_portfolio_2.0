@@ -29,8 +29,15 @@ class Projects {
   String description;
   String icon;
   String url;
+  List<String> technologies;
 
-  Projects({this.id, this.title, this.description, this.icon, this.url});
+  Projects(
+      {this.id,
+      this.title,
+      this.description,
+      this.icon,
+      this.url,
+      this.technologies});
 
   Projects.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -38,6 +45,7 @@ class Projects {
     description = json['description'];
     icon = json['icon'];
     url = json['url'];
+    technologies = json['technologies'].cast<String>();
   }
 
   Map<String, dynamic> toJson() {
@@ -47,6 +55,7 @@ class Projects {
     data['description'] = this.description;
     data['icon'] = this.icon;
     data['url'] = this.url;
+    data['technologies'] = this.technologies;
     return data;
   }
 }

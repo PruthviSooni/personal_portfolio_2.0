@@ -6,132 +6,153 @@ import 'package:portfolio/utils/assets.dart';
 import 'package:portfolio/utils/colors.dart';
 import 'package:portfolio/utils/constants.dart';
 import 'package:portfolio/utils/urls.dart';
+import 'package:responsive_widgets/responsive_widgets.dart';
 
 class About extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-      return pageView(constraints);
-    });
+    ResponsiveWidgets.init(
+      context,
+    );
+    return ResponsiveWidgets.builder(
+      // referenceHeight: 1000,
+      // referenceWidth: 600,
+      child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+        return pageView(constraints, context);
+      }),
+    );
   }
 
-  Widget pageView(BoxConstraints constraints) => Container(
+  Widget pageView(BoxConstraints constraints, BuildContext context) =>
+      Container(
         color: kDarkGrey,
         height: double.infinity,
         width: double.infinity,
         child: Stack(
           children: [
-            Positioned(
-              top: constraints.maxWidth < 800 ? 50 : 150,
-              left: constraints.maxWidth < 800 ? 50 : 100,
-              right: constraints.maxWidth < 800 ? 50 : 100,
-              child: RichText(
-                text: TextSpan(
-                  text: 'Hi👋',
-                  style: GoogleFonts.raleway(
-                    color: Colors.white,
-                    fontSize: constraints.maxWidth < 800 ? 35 : 50,
-                  ),
+            Column(
+              children: [
+                SizedBox(
+                  height: constraints.maxWidth < 800 ? 20 : 100,
                 ),
-              ),
-            ),
-            Positioned(
-              top: constraints.maxWidth < 800 ? 100 : 220,
-              left: constraints.maxWidth < 800 ? 50 : 100,
-              child: Row(
-                children: [
-                  Text('I am ',
-                      style: GoogleFonts.raleway(
-                        color: Colors.white,
-                        fontSize: constraints.maxWidth < 800 ? 35 : 50,
-                        letterSpacing: 1.5,
-                      )),
-                  TypewriterAnimatedTextKit(
-                    text: ['Pruthvi_Soni'],
-                    alignment: Alignment(1.0, -1.0),
-                    totalRepeatCount: 1,
-                    speed: Duration(milliseconds: 300),
-                    textStyle: GoogleFonts.raleway(
+                ContainerResponsive(
+                  alignment: Alignment.topLeft,
+                  margin: EdgeInsets.only(left: 50),
+                  // padding: EdgeInsets.only(top: 30),
+                  child: Text(
+                    'Hi👋',
+                    style: GoogleFonts.raleway(
                       color: Colors.white,
-                      fontSize: constraints.maxWidth < 800 ? 35 : 50,
-                      letterSpacing: 1.5,
+                      fontSize: constraints.maxWidth < 800 ? 40 : 50,
                     ),
                   ),
-                ],
-              ),
-            ),
-            Positioned(
-              top: constraints.maxWidth < 800 ? 130 : 260,
-              left: constraints.maxWidth < 800 ? 50 : 100,
-              right: constraints.maxWidth < 800 ? 50 : 100,
-              child: Column(
-                children: [
-                  Text(
+                ),
+                ContainerResponsive(
+                  widthResponsive: true,
+                  margin: EdgeInsets.only(left: 50, right: 50),
+                  padding: EdgeInsets.only(
+                    top: 10,
+                  ),
+                  alignment: Alignment.centerLeft,
+                  child: Wrap(
+                    alignment: WrapAlignment.start,
+                    children: [
+                      Text(
+                        'I am ',
+                        style: GoogleFonts.raleway(
+                          color: Colors.white,
+                          fontSize: constraints.maxWidth < 800 ? 35 : 45,
+                          letterSpacing: 1.5,
+                        ),
+                      ),
+                      TypewriterAnimatedTextKit(
+                        text: ['Pruthvi_Soni'],
+                        totalRepeatCount: 1,
+                        speed: Duration(milliseconds: 300),
+                        textStyle: GoogleFonts.raleway(
+                          color: Colors.white,
+                          fontSize: constraints.maxWidth < 800 ? 35 : 45,
+                          letterSpacing: 1.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                ContainerResponsive(
+                  margin: EdgeInsets.only(left: 50, right: 50),
+                  padding: EdgeInsets.only(top: 10),
+                  heightResponsive: true,
+                  widthResponsive: true,
+                  child: Text(
                     aboutMySelf,
                     style: GoogleFonts.raleway(
-                      fontSize: 18,
+                      fontSize: constraints.maxWidth < 800 ? 18 : 28,
                       color: Colors.white,
                       letterSpacing: 1.5,
                     ),
                     textAlign: TextAlign.justify,
                   ),
-                ],
-              ),
-            ),
-            Positioned(
-              top: constraints.maxWidth < 800 ? 250 : 350,
-              left: constraints.maxWidth < 800 ? 50 : 100,
-              child: Container(
-                padding: EdgeInsets.only(top: 10),
-                height: 60,
-                child: RotateAnimatedTextKit(
-                  totalRepeatCount: 1000,
-                  text: [
-                    "My Hobby and Interest's are",
-                    "Android 🧡",
-                    "Flutter 📱",
-                    "Dart 🎯",
-                    "Web Development 💻",
-                    "Netflix 🎬",
-                    "Music 🎵",
-                    "Tech Enthusiast 👨‍💻",
-                    "Gamer 🎮",
-                  ],
-                  isRepeatingAnimation: true,
-                  textStyle: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30.0,
+                ),
+                ContainerResponsive(
+                  heightResponsive: true,
+                  widthResponsive: true,
+                  margin: EdgeInsets.only(left: 50, right: 50),
+                  padding: EdgeInsets.only(top: 10),
+                  height: 70,
+                  child: RotateAnimatedTextKit(
+                    totalRepeatCount: 1000,
+                    text: [
+                      "My Hobby and Interest's are",
+                      "Android 🧡",
+                      "Flutter 📱",
+                      "Dart 🎯",
+                      "Web Development 💻",
+                      "Netflix 🎬",
+                      "Music 🎵",
+                      "Tech Enthusiast 👨‍💻",
+                      "Gamer 🎮",
+                    ],
+                    isRepeatingAnimation: true,
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                      fontSize: constraints.maxWidth < 800 ? 20 : 35,
+                    ),
                   ),
                 ),
-              ),
-            ),
-            Positioned(
-              top: constraints.maxWidth < 800 ? 330 : 430,
-              left: constraints.maxWidth < 800 ? 50 : 100,
-              child: FlatButton.icon(
-                padding: EdgeInsets.all(16),
-                color: kAccentColor,
-                label: Text(
-                  'My Resume',
-                  style: GoogleFonts.raleway(
-                    fontSize: 18,
-                    color: Colors.black,
-                    letterSpacing: 1.5,
+                ContainerResponsive(
+                  heightResponsive: true,
+                  widthResponsive: true,
+                  margin: EdgeInsets.only(left: 50),
+                  padding: EdgeInsets.only(top: 10),
+                  alignment: Alignment.bottomLeft,
+                  child: FlatButton.icon(
+                    padding: EdgeInsets.all(16),
+                    color: kAccentColor,
+                    label: Text(
+                      'My Resume',
+                      style: GoogleFonts.raleway(
+                        fontSize: 18,
+                        color: Colors.black,
+                        letterSpacing: 1.5,
+                      ),
+                    ),
+                    onPressed: () => Urls.showResume,
+                    icon: Icon(
+                      AntDesign.form,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
-                onPressed: () => Urls.showResume,
-                icon: Icon(
-                  AntDesign.form,
-                  color: Colors.black,
-                ),
-              ),
+              ],
             ),
-            Container(
+            ContainerResponsive(
+              heightResponsive: true,
+              widthResponsive: true,
               alignment: Alignment.bottomRight,
               child: Image.asset(
                 Assets.personIllustration,
-                width: constraints.maxWidth < 800 ? 350 : 400,
+                width: constraints.maxWidth < 800 ? 250 : 450,
               ),
             ),
           ],

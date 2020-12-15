@@ -1,48 +1,35 @@
-import 'package:easy_web_view/easy_web_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:responsive_widgets/responsive_widgets.dart';
 
 import '../utils/assets.dart';
-import '../utils/colors.dart';
 
 class Skills extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-      print(constraints.maxWidth);
-      return pageView(constraints, context);
-    });
+    ResponsiveWidgets.init(
+      context,
+    );
+    return ResponsiveWidgets.builder(
+      // referenceHeight: 1000,
+      // referenceWidth: 600,
+      child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+        return pageView(constraints, context);
+      }),
+    );
   }
 
   Widget pageView(BoxConstraints constraints, BuildContext context) {
     var size = constraints.maxWidth / 5.floorToDouble();
     var maxWidth = constraints.maxWidth;
     return Container(
-      color: kLightGrey,
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       child: Stack(
         children: [
-          Positioned(
-            top: maxWidth < 800 ? 520 : 450,
-            left: maxWidth < 800 ? 10 : 100,
-            right: maxWidth < 800 ? 10 : 100,
-            child: Column(
-              children: [
-                EasyWebView(
-                  width: maxWidth < 800 ? 400 : 500,
-                  height: 200,
-                  isHtml: false,
-                  isMarkdown: false,
-                  src: Assets.gitStats,
-                  onLoaded: () {},
-                ),
-              ],
-            ),
-          ),
           Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
                 alignment: Alignment.center,
@@ -53,15 +40,30 @@ class Skills extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: EdgeInsets.all(20),
-                child: Wrap(
-                  runSpacing: 5,
-                  direction: Axis.horizontal,
-                  alignment: WrapAlignment.center,
-                  spacing: 10,
-                  children:
-                      Assets.skills(size <= 200 ? 220 : size, constraints),
-                ),
+                child: maxWidth < 800
+                    ? Expanded(
+                        child: ListView(
+                          padding: EdgeInsets.all(20),
+                          physics: BouncingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            Wrap(
+                              runSpacing: 5,
+                              // direction: Axis.horizontal,
+                              alignment: WrapAlignment.center,
+                              spacing: 10,
+                              children: Assets.skills(300, constraints),
+                            ),
+                          ],
+                        ),
+                      )
+                    : Wrap(
+                        runSpacing: 5,
+                        direction: Axis.horizontal,
+                        alignment: WrapAlignment.center,
+                        spacing: 10,
+                        children: Assets.skills(size <= 200 ? 220 : size, constraints),
+                      ),
               ),
             ],
           ),
@@ -74,7 +76,7 @@ class Skills extends StatelessWidget {
               alignment: WrapAlignment.center,
               direction: Axis.horizontal,
               spacing: 10,
-              children: Assets.iconsList(maxWidth < 800 ? 35 : 50),
+              children: Assets.iconsList(maxWidth < 800 ? 40 : 50),
             ),
           ),
         ],
