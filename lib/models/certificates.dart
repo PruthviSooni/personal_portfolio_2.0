@@ -1,6 +1,6 @@
 class GetCertificates {
   static String url =
-      "https://raw.githubusercontent.com/PruthviSooni/projects_json/master/certificates.json";
+      "https://personal-portfolioapi.herokuapp.com/api/certificates";
   List<Certificates> certificates;
 
   GetCertificates({this.certificates});
@@ -24,26 +24,38 @@ class GetCertificates {
 }
 
 class Certificates {
-  String id;
+  String sId;
   String courseName;
-  String courseImg;
   String courseURL;
+  String courseImg;
+  String createdAt;
+  String updatedAt;
 
-  Certificates({this.id, this.courseName, this.courseImg, this.courseURL});
+  Certificates(
+      {this.sId,
+      this.courseName,
+      this.courseURL,
+      this.courseImg,
+      this.createdAt,
+      this.updatedAt});
 
   Certificates.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    sId = json['_id'];
     courseName = json['courseName'];
-    courseImg = json['courseImg'];
     courseURL = json['courseURL'];
+    courseImg = json['courseImg'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
+    data['_id'] = this.sId;
     data['courseName'] = this.courseName;
-    data['courseImg'] = this.courseImg;
     data['courseURL'] = this.courseURL;
+    data['courseImg'] = this.courseImg;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
     return data;
   }
 }

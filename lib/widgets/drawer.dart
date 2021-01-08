@@ -10,8 +10,11 @@ class DrawerChild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.grey.shade900,
+      width: 150,
+      color: Colors.grey.shade900.withOpacity(.8),
+      alignment: Alignment.center,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ListTile(
             title: Text(

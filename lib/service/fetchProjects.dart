@@ -11,12 +11,16 @@ class GetData extends Service {
   // ignore: missing_return
   Future<List<Projects>> getProjects() async {
     http.Response response = await http.get(ProjectData.url);
-    if (response.statusCode == 200) {
-      var json = jsonDecode(response.body);
-      List<Projects> projects = ProjectData.fromJson(json).projects;
-      return projects;
-    } else {
-      print(response.statusCode);
+    try {
+      if (response.statusCode == 200) {
+        var json = jsonDecode(response.body);
+        List<Projects> projects = ProjectData.fromJson(json).projects;
+        return projects;
+      } else {
+        print(response.statusCode);
+      }
+    } catch (e) {
+      print(e);
     }
   }
 

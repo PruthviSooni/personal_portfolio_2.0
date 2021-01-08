@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class NavBar extends StatelessWidget {
   final Function onTap;
@@ -16,19 +17,32 @@ class NavBar extends StatelessWidget {
           Tab(
             child: Text(
               'About',
+              style: GoogleFonts.raleway(),
             ),
           ),
           Tab(
-            child: Text('Skills', textAlign: TextAlign.center),
+            child: Text(
+              'Skills',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.raleway(),
+            ),
           ),
           Tab(
-            child: Text('Projects', textAlign: TextAlign.center),
+            child: Text(
+              'Projects',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.raleway(),
+            ),
           ),
           Tab(
             child: Text('Certificates'),
           ),
           Tab(
-            child: Text('Contact', textAlign: TextAlign.center),
+            child: Text(
+              'Contact',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.raleway(),
+            ),
           ),
         ],
       ),

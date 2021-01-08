@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:portfolio/service/fetchProjects.dart';
 import 'package:portfolio/widgets/project_widget.dart';
-import 'package:responsive_widgets/responsive_widgets.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 import '../models/projects.dart' as project;
@@ -34,23 +34,19 @@ class _ProjectsState extends State<Projects> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    ResponsiveWidgets.init(
-      context,
-    );
-    return ResponsiveWidgets.builder(
-      child: LayoutBuilder(
+  Widget build(BuildContext context) => LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
+        ScreenUtil.init(constraints,
+            designSize: Size(
+              constraints.maxWidth,
+              constraints.maxHeight,
+            ));
         return pageView(constraints, context);
-      }),
-    );
-  }
+      });
 
   Widget pageView(BoxConstraints constraints, BuildContext context) {
     return Container(
       color: kDarkGrey,
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
       child: FutureBuilder(
           future: getData(),
           builder: (context, snapshot) {
@@ -67,33 +63,37 @@ class _ProjectsState extends State<Projects> {
                                 fontSize: 26, color: Colors.white),
                           ),
                         ),
-                        Container(
-                          height: 400,
-                          margin: EdgeInsets.all(10),
-                          child: GridView.builder(
-                            itemCount: reversed.length,
-                            scrollDirection: Axis.horizontal,
-                            physics: BouncingScrollPhysics(),
-                            itemBuilder: (BuildContext context, int index) {
-                              return ProjectWidget(
-                                projects: project.Projects(
-                                    title: reversed[index].title,
-                                    description: reversed[index].description,
-                                    icon: reversed[index].icon,
-                                    id: reversed[index].id,
-                                    url: reversed[index].url,
-                                    technologies: reversed[index].technologies),
-                              );
-                            },
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 1),
+                        Flexible(
+                          child: Container(
+                            height: 400,
+                            child: ListView.builder(
+                              itemCount: reversed.length,
+                              scrollDirection: Axis.horizontal,
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              physics: BouncingScrollPhysics(),
+                              itemBuilder: (BuildContext context, int index) {
+                                return ProjectWidget(
+                                  constraints: constraints,
+                                  projects: project.Projects(
+                                      title: reversed[index].title,
+                                      description: reversed[index].description,
+                                      icon: reversed[index].icon,
+                                      sId: reversed[index].sId,
+                                      url: reversed[index].url,
+                                      technologies:
+                                          reversed[index].technologies),
+                                );
+                              },
+                            ),
                           ),
-                        )
+                        ),
                       ],
                     )
                   : Center(
-                      child: Text(snapshot.error.toString()),
+                      child: Text(
+                        snapshot.error.toString(),
+                        style: TextStyle(color: Colors.white),
+                      ),
                     );
             } else {
               return Center(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:portfolio/models/certificates.dart'as certificates;
+import 'package:portfolio/models/certificates.dart' as certificates;
 import 'package:portfolio/service/fetchCertificates.dart';
 import 'package:portfolio/utils/colors.dart';
 import 'package:portfolio/widgets/certificates_widget.dart';
@@ -25,19 +25,14 @@ class _CertificatesState extends State<Certificates> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-      print(constraints.maxWidth);
-      return pageView(constraints, context);
-    });
-  }
+  Widget build(BuildContext context) => LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+        return pageView(constraints, context);
+      });
 
   Widget pageView(BoxConstraints constraints, BuildContext context) {
     return Container(
       color: kDarkGrey,
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
       child: FutureBuilder(
           future: getData(),
           builder: (context, snapshot) {
@@ -49,29 +44,30 @@ class _CertificatesState extends State<Certificates> {
                           alignment: Alignment.center,
                           padding: EdgeInsets.all(20),
                           child: Text(
-                            'Projects Overview',
+                            'Certificates Overview',
                             style: GoogleFonts.raleway(
                                 fontSize: 26, color: Colors.white),
                           ),
                         ),
-                        Container(
-                          height: 400,
-                          margin: EdgeInsets.all(20),
-                          child: GridView.builder(
-                            itemCount: _certificates.length,
-                            scrollDirection: Axis.horizontal,
-                            physics: BouncingScrollPhysics(),
-                            itemBuilder: (BuildContext context, int index) {
-                              return CertificatesWidget(certificate: certificates.Certificates(
-                                courseImg: _certificates[index].courseImg,
-                                courseName: _certificates[index].courseName,
-                                courseURL: _certificates[index].courseURL,
-                              )
-                              );
-                            },
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 1),
+                        Flexible(
+                          child: Container(
+                            height: 400,
+                            child: ListView.builder(
+                              itemCount: _certificates.length,
+                              scrollDirection: Axis.horizontal,
+                              physics: BouncingScrollPhysics(),
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              itemBuilder: (BuildContext context, int index) {
+                                return CertificatesWidget(
+                                    constraints: constraints,
+                                    certificate: certificates.Certificates(
+                                      courseImg: _certificates[index].courseImg,
+                                      courseName:
+                                          _certificates[index].courseName,
+                                      courseURL: _certificates[index].courseURL,
+                                    ));
+                              },
+                            ),
                           ),
                         )
                       ],

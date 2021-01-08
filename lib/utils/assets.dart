@@ -5,7 +5,8 @@ import 'colors.dart';
 
 class Assets {
   //Illustration Image paths
-  static String personIllustration = 'assets/person.png';
+  static String developerIllustration = 'assets/developer.png';
+  static String conversationIllustration = 'assets/conversation.png';
   static String skillsIllustration = 'assets/skills.png';
   static String projectsIllustration = 'assets/projects.png';
   static String certificateIllustration = 'assets/certificates.png';

@@ -20,26 +20,4 @@ class AutoScroll {
         preferPosition: AutoScrollPosition.begin);
     controller.highlight(index);
   }
-
-  // static Widget getRow(
-  //     int index, double height, AutoScrollController controller) {
-  //   return _wrapScrollTag(
-  //       index: index,
-  //       controller: controller,
-  //       child: Container(
-  //         alignment: Alignment.topCenter,
-  //         height: height,
-  //         child: screens.elementAt(index),
-  //       ));
-  // }
-  //
-  // static Widget _wrapScrollTag(
-  //         {int index, Widget child, AutoScrollController controller}) =>
-  //     AutoScrollTag(
-  //       key: ValueKey(index),
-  //       controller: controller,
-  //       index: index,
-  //       child: child,
-  //       highlightColor: Colors.black.withOpacity(0.1),
-  //     );
 }

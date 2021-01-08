@@ -7,60 +7,53 @@ class FloatingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Container(
-      width: 100,
-      height: 500,
-      padding: EdgeInsets.only(right: 20),
-      margin: EdgeInsets.only(top: size.height / 1.3),
-      alignment: Alignment.bottomLeft,
-      child: Row(
+      margin: EdgeInsets.only(bottom: 30),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Column(
-            children: [
-              Tooltip(
-                message: "Youtube",
-                child: FlatButton(
-                  child: Icon(
-                    AntDesign.youtube,
-                    color: Colors.redAccent.shade700,
-                  ),
-                  onPressed: () => Urls.launchYoutube,
-                ),
+          Tooltip(
+            message: "Youtube",
+            child: FlatButton(
+              child: Icon(
+                AntDesign.youtube,
+                color: Colors.redAccent.shade700,
               ),
-              SizedBox(height: 10),
-              Tooltip(
-                message: "Github",
-                child: FlatButton(
-                  child: Icon(
-                    AntDesign.github,
-                    color: Colors.white,
-                  ),
-                  onPressed: () => Urls.launchGithub,
-                ),
+              onPressed: () => Urls.launchYoutube,
+            ),
+          ),
+          SizedBox(height: 10),
+          Tooltip(
+            message: "Github",
+            child: FlatButton(
+              child: Icon(
+                AntDesign.github,
+                color: Colors.white,
               ),
-              SizedBox(height: 10),
-              Tooltip(
-                message: "Linkedin",
-                child: FlatButton(
-                  child: Icon(
-                    AntDesign.linkedin_square,
-                    color: Colors.lightBlue.shade600,
-                  ),
-                  onPressed: () => Urls.launchLinkDin,
-                ),
+              onPressed: () => Urls.launchGithub,
+            ),
+          ),
+          SizedBox(height: 10),
+          Tooltip(
+            message: "Linkedin",
+            child: FlatButton(
+              child: Icon(
+                AntDesign.linkedin_square,
+                color: Colors.lightBlue.shade600,
               ),
-              SizedBox(height: 10),
-              Tooltip(
-                message: "Twitter",
-                child: FlatButton(
-                  child: Icon(
-                    AntDesign.twitter,
-                    color: Colors.blueAccent,
-                  ),
-                  onPressed: () => Urls.launchTwitter,
-                ),
+              onPressed: () => Urls.launchLinkDin,
+            ),
+          ),
+          SizedBox(height: 10),
+          Tooltip(
+            message: "Twitter",
+            child: FlatButton(
+              child: Icon(
+                AntDesign.twitter,
+                color: Colors.blueAccent,
               ),
-            ],
-          )
+              onPressed: () => Urls.launchTwitter,
+            ),
+          ),
         ],
       ),
     );

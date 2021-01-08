@@ -10,6 +10,7 @@ class Urls {
   static void get launchLinkDin => _launchLinkDin();
 
   static void get showResume => _showResume();
+  static void get launchMail => _launchMail();
 
   static _launchYoutube() async {
     const url = 'https://www.youtube.com/channel/UCVw1XqwQlvpRcktMaSyVY_g';
@@ -21,8 +22,7 @@ class Urls {
   }
 
   static _showResume() async {
-    const url =
-        'https://drive.google.com/file/d/1cpMy0gz7qzhFmOQ26P0rSTsQXH4S-Tt2/view';
+    const url = 'https://drive.google.com/file/d/1cpMy0gz7qzhFmOQ26P0rSTsQXH4S-Tt2/view';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -58,6 +58,16 @@ class Urls {
   }
 
   static launchUrl(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  static _launchMail() async {
+    const url =
+        'https://mail.google.com/mail/u/0/?view=cm&fs=1&to=pruthvisoni7@gmail.com&su=SUBJECT&body=BODY&tf=1';
     if (await canLaunch(url)) {
       await launch(url);
     } else {

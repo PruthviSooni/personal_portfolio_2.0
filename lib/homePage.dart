@@ -1,8 +1,11 @@
+import 'package:floating_action_row/floating_action_row.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:portfolio/pages/footer.dart';
 import 'package:portfolio/widgets/drawer.dart';
 import 'package:portfolio/widgets/floating_widget.dart';
-import 'package:responsive_widgets/responsive_widgets.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:smooth_scroll_web/smooth_scroll_web.dart';
 
@@ -12,6 +15,8 @@ import 'pages/certificates.dart';
 import 'pages/contact.dart';
 import 'pages/projects.dart';
 import 'pages/skills.dart';
+import 'utils/colors.dart';
+import 'utils/urls.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,128 +26,195 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final scrollDirection = Axis.vertical;
   int counter = 0;
-  AutoScrollController controller;
+  AutoScrollController _controller;
   List<Widget> screens;
+  int pixel = 1040;
 
   @override
   void initState() {
     super.initState();
-    controller = AutoScrollController(
-        viewportBoundaryGetter: () =>
-            Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
-        axis: scrollDirection);
+    _controller = AutoScrollController(
+      viewportBoundaryGetter: () =>
+          Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
+      axis: scrollDirection,
+    );
     screens = [
       About(),
       Skills(),
       Projects(),
       Certificates(),
       Contact(),
+      Footer()
     ];
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    ResponsiveWidgets.init(
-      context,
-    );
-    return ResponsiveWidgets.builder(
-      child: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          return Scaffold(
-            // extendBodyBehindAppBar: true,
-            backgroundColor: Colors.grey.shade900,
-            drawer: constraints.maxWidth < 800
-                ? Drawer(
-                    child: DrawerChild(controller: controller),
-                  )
-                : null,
-            appBar: AppBar(
-              title: Text(
-                'Portfolio',
-                style: GoogleFonts.monoton(fontSize: 32),
-              ),
-              centerTitle: constraints.maxWidth < 800 ? true : false,
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              toolbarHeight: 100,
-              actions: [
-                constraints.maxWidth < 800
-                    ? Container()
-                    : Container(
-                        width: size.width / 2,
-                        child: NavBar(
-                          onTap: (index) async {
-                            scrollToIndex(index: index);
-                          },
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return Scaffold(
+          backgroundColor: Colors.grey.shade900,
+          drawer: constraints.maxWidth < 800
+              ? DrawerChild(controller: _controller)
+              : null,
+          appBar: AppBar(
+            title: Text(
+              'Portfolio',
+              style: GoogleFonts.permanentMarker(fontSize: 32),
+            ),
+            centerTitle: constraints.maxWidth < 800 ? true : false,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            toolbarHeight: 100,
+            actions: [
+              constraints.maxWidth < 800
+                  ? Container()
+                  : Container(
+                      width: size.width / 2,
+                      child: NavBar(
+                        onTap: (index) async {
+                          _scrollToIndex(index: index);
+                        },
+                      ),
+                    ),
+              constraints.maxWidth > 800
+                  ? Container()
+                  : Container(
+                      margin: EdgeInsets.only(right: 20),
+                      child: IconButton(
+                        tooltip: 'My Resume',
+                        onPressed: () => Urls.showResume,
+                        icon: Icon(
+                          AntDesign.form,
+                          color: kAccentColor,
                         ),
                       ),
-              ],
-            ),
-            floatingActionButton: FloatingWidget(),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.startDocked,
-            body: constraints.maxWidth > 800
-                ? SmoothScrollWeb(
-                    controller: controller,
-                    child: content(constraints, context),
-                  )
-                : content(constraints, context),
-          );
-        },
-      ),
-    );
-  }
+                    ),
+            ],
+          ),
+          // floatingActionButton: FloatingWidget(),
+          // floatingActionButtonLocation:
+          //     FloatingActionButtonLocation.startDocked,
 
-  ListView content(BoxConstraints constraints, BuildContext context) {
-    print("Height : ${constraints.biggest.height / 1.55}");
-    return ListView.builder(
-      physics: constraints.maxWidth < 800
-          ? BouncingScrollPhysics()
-          : NeverScrollableScrollPhysics(),
-      scrollDirection: scrollDirection,
-      controller: controller,
-      itemCount: screens.length,
-      itemBuilder: (BuildContext context, int index) {
-        return _getRow(
-            index,
-            constraints.maxHeight <= 600
-                ? MediaQuery.of(context).size.height
-                : MediaQuery.of(context).size.height - 100,
-            constraints);
+          body: constraints.maxWidth > 800
+              ? SmoothScrollWeb(
+                  controller: _controller,
+                  child: content(constraints, context),
+                )
+              : content(constraints, context),
+        );
       },
     );
   }
 
-  Future scrollToIndex({int index}) async {
-    await controller.scrollToIndex(index,
-        preferPosition: AutoScrollPosition.begin);
-    controller.highlight(index);
+  Widget content(BoxConstraints constraints, BuildContext context) {
+    return Stack(
+      children: [
+        ListView.builder(
+          physics: constraints.maxWidth < 800
+              ? BouncingScrollPhysics()
+              : NeverScrollableScrollPhysics(),
+          scrollDirection: scrollDirection,
+          controller: _controller,
+          itemCount: screens.length,
+          itemBuilder: (BuildContext context, int i) {
+            return _getRow(i, MediaQuery.of(context).size.height, constraints);
+          },
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FloatingActionRow(
+              color: kDarkGrey,
+              axis: Axis.horizontal,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(48),
+                  side: BorderSide(color: kAccentColor)),
+              elevation: 0,
+              children: <Widget>[
+                FloatingActionRowButton(
+                  icon: Icon(
+                    AntDesign.twitter,
+                    color: Colors.blueAccent,
+                  ),
+                  color: Colors.transparent,
+                  onTap: () => Urls.launchTwitter,
+                ),
+                FloatingActionRowDivider(),
+                FloatingActionRowButton(
+                    icon: Icon(
+                      AntDesign.youtube,
+                      color: Colors.redAccent.shade700,
+                    ),
+                    onTap: () => Urls.launchYoutube),
+                FloatingActionRowDivider(),
+                FloatingActionRowButton(
+                    icon: Icon(
+                      AntDesign.github,
+                      color: Colors.white,
+                    ),
+                    onTap: () => Urls.launchGithub),
+                FloatingActionRowDivider(),
+                FloatingActionRowButton(
+                    icon: Icon(
+                      AntDesign.linkedin_square,
+                      color: Colors.lightBlue.shade600,
+                    ),
+                    onTap: () => Urls.launchLinkDin),
+                FloatingActionRowDivider(),
+                FloatingActionRowButton(
+                    icon: Icon(
+                      Icons.arrow_upward,
+                      color: Colors.white,
+                    ),
+                    onTap: () => _scrollToIndex(index: 0)),
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Future _scrollToIndex({int index}) async {
+    await _controller.scrollToIndex(index);
+    print(index);
+    _controller.highlight(index);
   }
 
   Widget _getRow(int index, double height, BoxConstraints constraints) {
     return _wrapScrollTag(
         index: index,
-        child: Container(
-          alignment: Alignment.topCenter,
-          height: index == 4
-              ? constraints.biggest.height / 1.55
-              : index == 3
-                  ? constraints.biggest.height / 1.55
-                  : index == 2
-                      ? constraints.biggest.height / 1.55
-                      : index == 1
-                          ? constraints.maxWidth < 800
-                              ? constraints.biggest.height - 100
-                              : constraints.biggest.height - 400
-                          : height,
-          child: screens.elementAt(index),
+        child: Stack(
+          children: [
+            Container(
+              height: index == 5
+                  ? 140
+                  : index == 4
+                      ? 550
+                      : index == 3
+                          ? 500
+                          : index == 2
+                              ? constraints.biggest.height / 1.5
+                              : index == 1
+                                  ? 650
+                                  : height,
+              child: screens.elementAt(index),
+            ),
+          ],
         ));
   }
 
   Widget _wrapScrollTag({int index, Widget child}) => AutoScrollTag(
         key: ValueKey(index),
-        controller: controller,
+        controller: _controller,
         index: index,
         child: child,
         highlightColor: Colors.black.withOpacity(0.1),
