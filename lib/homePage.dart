@@ -5,7 +5,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:portfolio/pages/footer.dart';
 import 'package:portfolio/widgets/drawer.dart';
-import 'package:portfolio/widgets/floating_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:smooth_scroll_web/smooth_scroll_web.dart';
 
@@ -15,6 +15,7 @@ import 'pages/certificates.dart';
 import 'pages/contact.dart';
 import 'pages/projects.dart';
 import 'pages/skills.dart';
+import 'provider/app.provider.dart';
 import 'utils/colors.dart';
 import 'utils/urls.dart';
 
@@ -46,6 +47,13 @@ class _HomePageState extends State<HomePage> {
       Contact(),
       Footer()
     ];
+  }
+
+  @override
+  void didChangeDependencies() {
+    Provider.of<AppProvider>(context).fetchCertificates();
+    Provider.of<AppProvider>(context).fetchProjects();
+    super.didChangeDependencies();
   }
 
   @override
@@ -98,88 +106,25 @@ class _HomePageState extends State<HomePage> {
                     ),
             ],
           ),
-          // floatingActionButton: FloatingWidget(),
-          // floatingActionButtonLocation:
-          //     FloatingActionButtonLocation.startDocked,
-
-          body: constraints.maxWidth > 800
-              ? SmoothScrollWeb(
-                  controller: _controller,
-                  child: content(constraints, context),
-                )
-              : content(constraints, context),
+          floatingActionButton: floatingWidget(),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+          body: content(constraints, context),
         );
       },
     );
   }
 
   Widget content(BoxConstraints constraints, BuildContext context) {
-    return Stack(
-      children: [
-        ListView.builder(
-          physics: constraints.maxWidth < 800
-              ? BouncingScrollPhysics()
-              : NeverScrollableScrollPhysics(),
-          scrollDirection: scrollDirection,
-          controller: _controller,
-          itemCount: screens.length,
-          itemBuilder: (BuildContext context, int i) {
-            return _getRow(i, MediaQuery.of(context).size.height, constraints);
-          },
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: FloatingActionRow(
-              color: kDarkGrey,
-              axis: Axis.horizontal,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(48),
-                  side: BorderSide(color: kAccentColor)),
-              elevation: 0,
-              children: <Widget>[
-                FloatingActionRowButton(
-                  icon: Icon(
-                    AntDesign.twitter,
-                    color: Colors.blueAccent,
-                  ),
-                  color: Colors.transparent,
-                  onTap: () => Urls.launchTwitter,
-                ),
-                FloatingActionRowDivider(),
-                FloatingActionRowButton(
-                    icon: Icon(
-                      AntDesign.youtube,
-                      color: Colors.redAccent.shade700,
-                    ),
-                    onTap: () => Urls.launchYoutube),
-                FloatingActionRowDivider(),
-                FloatingActionRowButton(
-                    icon: Icon(
-                      AntDesign.github,
-                      color: Colors.white,
-                    ),
-                    onTap: () => Urls.launchGithub),
-                FloatingActionRowDivider(),
-                FloatingActionRowButton(
-                    icon: Icon(
-                      AntDesign.linkedin_square,
-                      color: Colors.lightBlue.shade600,
-                    ),
-                    onTap: () => Urls.launchLinkDin),
-                FloatingActionRowDivider(),
-                FloatingActionRowButton(
-                    icon: Icon(
-                      Icons.arrow_upward,
-                      color: Colors.white,
-                    ),
-                    onTap: () => _scrollToIndex(index: 0)),
-              ],
-            ),
-          ),
-        )
-      ],
+    return ListView.builder(
+      physics: BouncingScrollPhysics(),
+      scrollDirection: scrollDirection,
+      controller: _controller,
+      itemCount: screens.length,
+      shrinkWrap: true,
+      itemBuilder: (BuildContext context, int i) {
+        return _getRow(i, MediaQuery.of(context).size.height, constraints);
+      },
     );
   }
 
@@ -192,23 +137,19 @@ class _HomePageState extends State<HomePage> {
   Widget _getRow(int index, double height, BoxConstraints constraints) {
     return _wrapScrollTag(
         index: index,
-        child: Stack(
-          children: [
-            Container(
-              height: index == 5
-                  ? 140
-                  : index == 4
-                      ? 550
-                      : index == 3
-                          ? 500
-                          : index == 2
-                              ? constraints.biggest.height / 1.5
-                              : index == 1
-                                  ? 650
-                                  : height,
-              child: screens.elementAt(index),
-            ),
-          ],
+        child: Container(
+          height: index == 5
+              ? 140
+              : index == 4
+                  ? 550
+                  : index == 3
+                      ? 500
+                      : index == 2
+                          ? constraints.biggest.height / 1.5
+                          : index == 1
+                              ? 650
+                              : height,
+          child: screens.elementAt(index),
         ));
   }
 
@@ -219,4 +160,53 @@ class _HomePageState extends State<HomePage> {
         child: child,
         highlightColor: Colors.black.withOpacity(0.1),
       );
+
+  FloatingActionRow floatingWidget() {
+    return FloatingActionRow(
+      color: kDarkGrey,
+      axis: Axis.horizontal,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(48),
+          side: BorderSide(color: kAccentColor)),
+      elevation: 0,
+      children: <Widget>[
+        FloatingActionRowButton(
+          icon: Icon(
+            AntDesign.twitter,
+            color: Colors.blueAccent,
+          ),
+          color: Colors.transparent,
+          onTap: () => Urls.launchTwitter,
+        ),
+        FloatingActionRowDivider(),
+        FloatingActionRowButton(
+            icon: Icon(
+              AntDesign.youtube,
+              color: Colors.redAccent.shade700,
+            ),
+            onTap: () => Urls.launchYoutube),
+        FloatingActionRowDivider(),
+        FloatingActionRowButton(
+            icon: Icon(
+              AntDesign.github,
+              color: Colors.white,
+            ),
+            onTap: () => Urls.launchGithub),
+        FloatingActionRowDivider(),
+        FloatingActionRowButton(
+            icon: Icon(
+              AntDesign.linkedin_square,
+              color: Colors.lightBlue.shade600,
+            ),
+            onTap: () => Urls.launchLinkDin),
+        FloatingActionRowDivider(),
+        FloatingActionRowButton(
+            icon: Icon(
+              Icons.arrow_upward,
+              color: Colors.white,
+            ),
+            onTap: () => _scrollToIndex(index: 0)),
+      ],
+    );
+  }
 }

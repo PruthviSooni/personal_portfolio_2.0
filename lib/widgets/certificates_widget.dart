@@ -10,7 +10,8 @@ import 'package:portfolio/utils/urls.dart';
 class CertificatesWidget extends StatelessWidget {
   final Certificates certificate;
   final BoxConstraints constraints;
-  const CertificatesWidget({Key key, this.certificate, this.constraints}) : super(key: key);
+  const CertificatesWidget({Key key, this.certificate, this.constraints})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,11 @@ class CertificatesWidget extends StatelessWidget {
                   fit: BoxFit.cover,
                   width: size.width,
                   height: size.height,
-                  placeholder: (context, url) => CircularProgressIndicator(),
+                  // placeholder: (context, url) => Container(
+                  //   height: 50,
+                  //   width: 50,
+                  //   child: CircularProgressIndicator(),
+                  // ),
                   errorWidget: (context, url, error) => Text(
                     error.toString(),
                     style: TextStyle(color: Colors.white),

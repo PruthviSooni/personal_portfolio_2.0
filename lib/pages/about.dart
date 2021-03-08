@@ -40,6 +40,7 @@ class About extends StatelessWidget {
               ],
             )
           : Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 aboutMe(maxWidth, size),
                 illustration(maxWidth, constraints),
@@ -68,7 +69,7 @@ class About extends StatelessWidget {
       children: [
         Container(
           width: maxWidth < 500 ? size.width / 1.2 : size.width / 1.7,
-          height: maxWidth < 500 ? size.height / 1.4 : size.height / 1.7,
+          // height: maxWidth < 500 ? size.height / 1.4 : size.height / 1.7,
           margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           decoration: BoxDecoration(
             color: kDarkGrey,
@@ -113,6 +114,7 @@ class About extends StatelessWidget {
                   ),
                 ),
                 Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(
                       height: maxWidth < 600 ? 50 : 100,

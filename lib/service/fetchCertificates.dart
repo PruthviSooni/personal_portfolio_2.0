@@ -7,7 +7,7 @@ import '../models/certificates.dart';
 import '../models/projects.dart';
 import '../service/fetch_service.dart';
 
-class GetData extends Service {
+class GetCertificateData extends Service {
   @override
   // ignore: missing_return
   Future<List<Certificates>> getCertificates() async {

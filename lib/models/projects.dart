@@ -7,7 +7,7 @@ class ProjectData {
 
   ProjectData.fromJson(Map<String, dynamic> json) {
     if (json['projects'] != null) {
-      projects = new List<Projects>();
+      projects = <Projects>[];
       json['projects'].forEach((v) {
         projects.add(new Projects.fromJson(v));
       });

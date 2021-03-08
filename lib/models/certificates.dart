@@ -7,7 +7,7 @@ class GetCertificates {
 
   GetCertificates.fromJson(Map<String, dynamic> json) {
     if (json['certificates'] != null) {
-      certificates = new List<Certificates>();
+      certificates = <Certificates>[];
       json['certificates'].forEach((v) {
         certificates.add(new Certificates.fromJson(v));
       });

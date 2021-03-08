@@ -20,6 +20,7 @@ dependencies:
   flutter_screenutil: ^4.0.2+2
   cached_network_image: ^2.5.0
   floating_action_row: ^0.1.0
+  provider:
 #
 dev_dependencies:
   flutter_test:
